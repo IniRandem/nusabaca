@@ -1,17 +1,55 @@
-# nusabacaukom
+# NusaBaca 📚
 
-A new Flutter project.
+**NusaBaca** adalah aplikasi mobile untuk membaca dan berbagi cerita digital. NusaBaca dirancang untuk memberikan pengalaman membaca yang nyaman serta menjadi tempat bagi pengguna untuk menikmati berbagai cerita.
 
-## Getting Started
+## ✨ Fitur
 
-This project is a starting point for a Flutter application.
+- 📖 Membaca buku dan cerita digital
+- 🔍 Menjelajahi berbagai cerita
+- 📚 Menyimpan dan mengelola koleksi bacaan
+- ✍️ Membaca dan berbagi karya cerita
 
-A few resources to get you started if this is your first Flutter project:
+*Fitur-fitur di atas merupakan rencana pengembangan dan dapat berubah sesuai perkembangan aplikasi.*
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## 🛠️ Teknologi
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Flutter** — Framework pengembangan aplikasi
+- **Dart** — Bahasa pemrograman
+
+## 🚀 Menjalankan Project
+
+1. Clone repository:
+
+   ```bash
+   git clone https://github.com/IniRandem/nusabaca.git
+   ```
+
+2. Masuk ke folder project:
+
+   ```bash
+   cd nusabaca
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   flutter pub get
+   ```
+
+4. Jalankan aplikasi:
+
+   ```bash
+   flutter run
+   ```
+
+## 📌 Status Project
+
+Dalam tahap pengembangan.
+
+## 👨‍💻 Developer
+
+**IniRandem**
+
+---
+
+Made with ❤️ using Flutter.
