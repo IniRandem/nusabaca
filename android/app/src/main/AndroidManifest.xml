@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission andoird:name="android.permission.INTERNET"/>
     <application
-        android:label="nusabacaukom"
+        android:label="NusaBaca"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
