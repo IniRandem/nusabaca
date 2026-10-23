@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:nusabacaukom/controllers/cerita_provider.dart';
 import 'package:nusabacaukom/models/cerita_model.dart';
 import 'package:nusabacaukom/widgets/cerita_card.dart';
+import 'package:nusabacaukom/services/dokumen_service.dart';
 
 class FormCeritaPage extends StatefulWidget {
   final Cerita? cerita; // null = tambah baru, terisi = edit
@@ -23,6 +24,7 @@ class _FormCeritaPageState extends State<FormCeritaPage> {
   int? _kategoriId;
   File? _coverBaru;
 
+  bool _membaca = false; // true saat dokumen sedang dibaca
   bool get _modeEdit => widget.cerita != null;
 
   @override
@@ -52,6 +54,62 @@ class _FormCeritaPageState extends State<FormCeritaPage> {
     );
     if (hasil != null) {
       setState(() => _coverBaru = File(hasil.path));
+    }
+  }
+
+  Future<void> _imporDokumen() async {
+    final messenger = ScaffoldMessenger.of(context);
+    setState(() => _membaca = true);
+
+    try {
+      final hasil = await DokumenService().pilihDanBaca();
+      if (hasil == null || !mounted) return; // pengguna membatalkan
+
+      // Kalau sudah ada tulisan, minta konfirmasi sebelum menimpa
+      if (_isiCtrl.text.trim().isNotEmpty) {
+        final ganti = await showDialog<bool>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Ganti isi cerita?'),
+            content: Text(
+              'Isi yang sudah Anda ketik akan diganti dengan teks dari "${hasil.namaFile}".',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, false),
+                child: const Text('Batal'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(ctx, true),
+                child: const Text('Ganti'),
+              ),
+            ],
+          ),
+        );
+        if (ganti != true || !mounted) return;
+      }
+
+      setState(() {
+        _isiCtrl.text = hasil.teks;
+        // Judul kosong? Pakai nama file sebagai saran
+        if (_judulCtrl.text.trim().isEmpty) {
+          _judulCtrl.text = hasil.judulSaran;
+        }
+      });
+
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Teks berhasil dimasukkan. Periksa dan rapikan sebelum dipublikasikan.',
+          ),
+        ),
+      );
+    } catch (e) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+      );
+    } finally {
+      if (mounted) setState(() => _membaca = false);
     }
   }
 
@@ -181,6 +239,29 @@ class _FormCeritaPageState extends State<FormCeritaPage> {
                 ),
               ),
               const SizedBox(height: 16),
+              // ----- Impor dari dokumen -----
+              OutlinedButton.icon(
+                onPressed: _membaca ? null : _imporDokumen,
+                icon: _membaca
+                    ? const SizedBox(
+                        height: 18,
+                        width: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.upload_file),
+                label: Text(
+                  _membaca
+                      ? 'Membaca dokumen...'
+                      : 'Impor dari dokumen (.txt, .docx, .pdf)',
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Atau ketik langsung di bawah. Teks hasil impor bisa diedit.',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 12),
 
               // ----- Isi cerita -----
               TextFormField(

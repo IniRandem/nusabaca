@@ -78,6 +78,19 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  // Mengembalikan null kalau sukses, atau teks error kalau gagal
+  Future<String?> ubahNama(String nama) async {
+    try {
+      await _service.ubahNama(nama);
+      _profil = await _service.ambilProfil();
+      notifyListeners();
+      return null;
+    } catch (e) {
+      debugPrint('ubahNama error: $e');
+      return 'Gagal mengubah nama. Periksa koneksi internet Anda.';
+    }
+  }
+
   Future<void> logout() async {
     await _service.logout();
     _profil = null;

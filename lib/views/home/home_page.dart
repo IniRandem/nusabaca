@@ -6,7 +6,6 @@ import 'package:nusabacaukom/models/cerita_model.dart';
 import 'package:nusabacaukom/views/detail/detail_page.dart';
 import 'package:nusabacaukom/views/home/search_page.dart';
 import 'package:nusabacaukom/widgets/cerita_card.dart';
-import 'package:nusabacaukom/views/studio/studio_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -35,24 +34,9 @@ class HomePage extends StatelessWidget {
               MaterialPageRoute(builder: (_) => const SearchPage()),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Keluar',
-            onPressed: () => context.read<AuthProvider>().logout(),
-          ),
         ],
       ),
 
-      floatingActionButton: auth.isAuthor
-          ? FloatingActionButton.extended(
-              icon: const Icon(Icons.edit_note),
-              label: const Text('Studio Penulis'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const StudioPage()),
-              ),
-            )
-          : null,
       body: _isi(context, auth, c),
     );
   }

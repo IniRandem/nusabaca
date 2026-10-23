@@ -44,4 +44,11 @@ class AuthService {
     if (data == null) return null;
     return UserModel.fromMap(data);
   }
+
+  // Mengubah nama tampilan di tabel users
+  Future<void> ubahNama(String nama) async {
+    final user = currentUser;
+    if (user == null) return;
+    await _db.from('users').update({'nama_penulis': nama}).eq('id', user.id);
+  }
 }

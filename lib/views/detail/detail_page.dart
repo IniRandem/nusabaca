@@ -4,6 +4,7 @@ import 'package:nusabacaukom/controllers/cerita_provider.dart';
 import 'package:nusabacaukom/models/cerita_model.dart';
 import 'package:nusabacaukom/views/detail/reader_page.dart';
 import 'package:nusabacaukom/widgets/cerita_card.dart';
+import 'package:nusabacaukom/controllers/markah_provider.dart';
 
 class DetailPage extends StatelessWidget {
   final Cerita cerita;
@@ -13,9 +14,32 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tema = Theme.of(context).textTheme;
+    final tersimpan = context.watch<MarkahProvider>().sudahDimarkah(cerita.id);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Detail Cerita')),
+      appBar: AppBar(
+        title: const Text('Detail Cerita'),
+        actions: [
+          IconButton(
+            icon: Icon(tersimpan ? Icons.bookmark : Icons.bookmark_border),
+            tooltip: tersimpan ? 'Hapus dari markah' : 'Simpan ke markah',
+            onPressed: () async {
+              final messenger = ScaffoldMessenger.of(context);
+              final error = await context.read<MarkahProvider>().toggle(cerita);
+              messenger.showSnackBar(
+                SnackBar(
+                  content: Text(
+                    error ??
+                        (tersimpan
+                            ? 'Dihapus dari markah'
+                            : 'Disimpan ke markah'),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
