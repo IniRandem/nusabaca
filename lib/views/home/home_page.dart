@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _isi(BuildContext context, AuthProvider auth, CeritaProvider c) {
-    // 1) Sedang memuat pertama kali
+    // 1) Loading untuk pertama kali
     if (c.loading && c.daftar.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -63,14 +63,14 @@ class HomePage extends StatelessWidget {
       );
     }
 
-    // 3) Tampilan normal. Tarik ke bawah untuk memuat ulang.
+    // 3) Tampilan normal. Tarik ke bawah buat refresh.
     return RefreshIndicator(
       onRefresh: () => context.read<CeritaProvider>().muat(),
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Text(
-            'Halo, ${auth.profil?.namaPenulis ?? ''}',
+            'Halo, ${auth.profil?.namaPenulis ?? ''}!',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const Text('Mau baca apa hari ini?'),
@@ -101,7 +101,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 24),
           ],
 
-          // ----- Chip genre -----
+          // ----- Filter genre -----
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(

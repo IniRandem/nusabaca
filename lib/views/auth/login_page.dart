@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const Text(
-                    'Baca dan tulis ceritamu',
+                    'Baca cerita, temukan dunia',
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
