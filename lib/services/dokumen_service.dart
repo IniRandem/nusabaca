@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:docx_to_text/docx_to_text.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class HasilDokumen {
@@ -21,24 +21,34 @@ class DokumenService {
   static const int _batasBytes = 5 * 1024 * 1024; // 5 MB
   static const int _batasKarakter = 100000;
 
+  // Jenis berkas yang boleh dipilih. Android memakai mimeTypes,
+  // jadi keduanya diisi agar filter bekerja.
+  static const XTypeGroup _jenisDokumen = XTypeGroup(
+    label: 'Dokumen',
+    extensions: ['txt', 'docx', 'pdf'],
+    mimeTypes: [
+      'text/plain',
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ],
+  );
+
   // Mengembalikan null kalau pengguna membatalkan pilihan file.
   // Melempar Exception dengan pesan ramah kalau gagal.
   Future<HasilDokumen?> pilihDanBaca() async {
-    final hasil = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['txt', 'docx', 'pdf'],
-      withData: true, // isi file langsung dimuat ke memori
-    );
-    if (hasil == null || hasil.files.isEmpty) return null;
+    final file = await openFile(acceptedTypeGroups: [_jenisDokumen]);
+    if (file == null) return null; // dibatalkan
 
-    final file = hasil.files.single;
-    final bytes = file.bytes;
-    if (bytes == null) throw Exception('File tidak dapat dibaca.');
-    if (bytes.length > _batasBytes) {
+    // Cek ukuran SEBELUM membaca isi, agar file raksasa tidak membebani memori
+    final ukuran = await file.length();
+    if (ukuran > _batasBytes) {
       throw Exception('Ukuran file terlalu besar (maksimal 5 MB).');
     }
 
-    final ekstensi = (file.extension ?? '').toLowerCase();
+    final bytes = await file.readAsBytes();
+    final nama = file.name;
+    final titik = nama.lastIndexOf('.');
+    final ekstensi = titik >= 0 ? nama.substring(titik + 1).toLowerCase() : '';
     String teks;
 
     try {
@@ -75,7 +85,7 @@ class DokumenService {
       throw Exception('Dokumen terlalu panjang (maksimal 100.000 karakter).');
     }
 
-    return HasilDokumen(file.name, teks);
+    return HasilDokumen(nama, teks);
   }
 
   // Samakan jenis baris baru, buang spasi berlebih, maksimal 1 baris kosong
