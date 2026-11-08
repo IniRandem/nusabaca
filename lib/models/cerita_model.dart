@@ -1,3 +1,5 @@
+//ini gunanya buat ngubah satu baris data yang dari supabase jadi objek ke sini nya
+
 class Cerita {
   final int id;
   final String userId;

@@ -21,7 +21,7 @@ class DokumenService {
   static const int _batasBytes = 5 * 1024 * 1024; // 5 MB
   static const int _batasKarakter = 100000;
 
-  // Jenis berkas yang boleh dipilih. Android memakai mimeTypes,
+  // Jenis berkas yang boleh dipilih.
   // jadi keduanya diisi agar filter bekerja.
   static const XTypeGroup _jenisDokumen = XTypeGroup(
     label: 'Dokumen',

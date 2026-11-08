@@ -1,3 +1,5 @@
+//data genre buku
+
 class Kategori {
   final int id;
   final String namaKategori;

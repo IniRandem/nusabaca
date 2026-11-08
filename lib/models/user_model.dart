@@ -1,3 +1,5 @@
+// ini isinya data pengguna dan role rolenya juga
+
 class UserModel {
   final String id;
   final String email;

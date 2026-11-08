@@ -13,10 +13,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
-    url: 'https://rfnutalgaxfixxogygpv.supabase.co', // isi dengan milik Anda
+    url: 'https://rfnutalgaxfixxogygpv.supabase.co', // url supabase
     // ignore: deprecated_member_use
     anonKey:
-        'sb_publishable_0yTuc22If76jvZCnr_RVuA_SnV2Y99E', // isi dengan milik Anda
+        'sb_publishable_0yTuc22If76jvZCnr_RVuA_SnV2Y99E', // "pw" nya supabase
   );
 
   // Muat pilihan tema SEBELUM aplikasi tampil, supaya tidak
@@ -63,7 +63,7 @@ class NusaBacaApp extends StatelessWidget {
   }
 }
 
-// Penjaga pintu: belum login ke Login, sudah login ke MainPage (navbar)
+// Penjaga pintu: kalo belum login ke Login, tp kalo udah login langsung ke MainPage (navbar)
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
